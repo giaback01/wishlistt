@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Wishlist của ebe nhím thúi</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+color:white;
+text-align:center;
+background:black;
+overflow-x:hidden;
+}
+
+/* nền sao */
+
+.stars{
+position:fixed;
+width:100%;
+height:100%;
+background:url("https://www.transparenttextures.com/patterns/stardust.png");
+z-index:-1;
+}
+
+h1{
+color:#ff6b9a;
+margin-top:20px;
+}
+
+.container{
+width:90%;
+max-width:600px;
+margin:auto;
+}
+
+input{
+padding:8px;
+margin:5px;
+border-radius:8px;
+border:none;
+}
+
+button{
+padding:10px 15px;
+background:#ff4d6d;
+border:none;
+border-radius:20px;
+color:white;
+cursor:pointer;
+}
+
+.item{
+background:#1e1e1e;
+padding:10px;
+margin:10px;
+border-radius:10px;
+}
+
+.item img{
+width:80px;
+border-radius:10px;
+margin-top:5px;
+}
+
+/* hiệu ứng */
+
+.effect{
+position:fixed;
+top:-50px;
+font-size:22px;
+animation:fall 6s linear forwards;
+pointer-events:none;
+}
+
+@keyframes fall{
+0%{transform:translateY(-50px);}
+100%{transform:translateY(100vh);opacity:0;}
+}
+
+.total{
+font-size:20px;
+color:#ffd166;
+margin:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<h1>🌹 Wishlist của ebe nhím thúi</h1>
+
+<div class="container">
+
+<input id="name" placeholder="Tên quà">
+<input id="price" placeholder="Giá (VND)">
+<input id="image" placeholder="Link ảnh món quà">
+
+<br>
+
+<button onclick="addGift()">Thêm quà</button>
+
+<div class="total">
+Tổng tiền: <span id="total">0</span> VND
+</div>
+
+<div id="savedList"></div>
+
+<h2>Danh sách quà</h2>
+
+<div id="giftInputs"></div>
+
+</div>
+
+<audio autoplay loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b9c0b2c8.mp3">
+</audio>
+
+<script>
+
+load()
+
+function addGift(){
+
+let name=document.getElementById("name").value
+let price=document.getElementById("price").value
+let image=document.getElementById("image").value
+
+if(name==""||price==""){
+alert("Nhập tên quà và giá")
+return
+}
+
+let data=JSON.parse(localStorage.getItem("wishlist"))||[]
+
+data.push({name,price,image})
+
+localStorage.setItem("wishlist",JSON.stringify(data))
+
+show(data)
+
+document.getElementById("name").value=""
+document.getElementById("price").value=""
+document.getElementById("image").value=""
+
+}
+
+function deleteGift(i){
+
+let data=JSON.parse(localStorage.getItem("wishlist"))
+
+data.splice(i,1)
+
+localStorage.setItem("wishlist",JSON.stringify(data))
+
+show(data)
+
+}
+
+function load(){
+
+let data=JSON.parse(localStorage.getItem("wishlist"))||[]
+
+show(data)
+
+}
+
+function show(data){
+
+let html=""
+let total=0
+
+data.forEach((item,i)=>{
+
+total+=Number(item.price)
+
+html+=`
+<div class="item">
+🎁 ${item.name}<br>
+💰 ${item.price} VND<br>
+<img src="${item.image}">
+<br>
+<button onclick="deleteGift(${i})">Xóa</button>
+</div>
+`
+
+})
+
+document.getElementById("savedList").innerHTML=html
+  document.getElementById("total").innerText=total
+
+}
+
+/* tạo 100 ô nhập */
+
+for(let i=1;i<=100;i++){
+
+let box=document.createElement("div")
+
+box.className="item"
+
+box.innerHTML=`
+<input placeholder="Tên quà ${i}">
+<input placeholder="Giá ${i}">
+`
+
+document.getElementById("giftInputs").appendChild(box)
+
+}
+
+/* hiệu ứng */
+
+function createEffect(symbol){
+
+let e=document.createElement("div")
+
+e.className="effect"
+
+e.innerHTML=symbol
+
+e.style.left=Math.random()*100+"%"
+
+document.body.appendChild(e)
+
+setTimeout(()=>e.remove(),6000)
+
+}
+
+setInterval(()=>createEffect("❤"),900)
+setInterval(()=>createEffect("🌹"),1300)
+
+</script>
+
+</body>
+</html>
